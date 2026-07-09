@@ -1,5 +1,5 @@
 # IP Addressing Table 
-This document outlines the VLSM addressing scheme used for the fictional office netork. 
+This document outlines the VLSM addressing scheme used for the fictional office network. 
 
 | Floor/Segment | Network | CIDR | Subnet Mask | Gateway | Useable Range | Broadcast |
 |---------------|---------|------|-------------|---------|---------------|-----------|
