@@ -1,0 +1,18 @@
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor/IDE clutter
+.vscode/
+.idea/
+*.swp
+
+# Packet Tracer backup/autosave files
+*.pkt.bak
+*.pka.bak
+~$*
+
+# Temp/working files
+*.tmp
+*.log
