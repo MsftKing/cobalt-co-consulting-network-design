@@ -61,6 +61,19 @@ Guest Access is deliberately connected to its dedicated port (Gig1/0/5) rather t
     - A single edge router handles the boundary to the ISPm where routing between networks occur.
 
 This reduces the cost and hardware count compared to router-per-floor design while still meeting all subnetting, DHCP, and routing requirements. 
+
+### 3. DHCP Design
+
+- DHCP is used for all end-user devices to reduce administrative overhead and support scalability as the office gorws, rather than statically configuring each PC. 
+- Static IPs were reserved for the server (DNS/DHCP/HTTP), and for the core switch's routed interface and the core-to-edge router link. 
+- Each floor subnet has its own DHCP pool, with the pool's starting address offset past the gateway and a small number of reserved address for statics. 
+- The Guest Wireless DHCP pool assigns a public DNS server (8.8.8.8) instead of the internal DNS server, so guest devices can't communicate with internal DNS records. (This does not fully isolate guest traffic from internal subnets, since RIP still advertises all subnets to each otehr. An ACL is planned for future integration).
+
+### 4. Phsyical Topology Choices 
+
+- One access swith per floor keeps traffic local to that floor and simplifies troubleshooting (issues on one floor don't require going through another floor's switch)
+- The server (DNS/DHCP/HTTP) sits in the IT/Management server room, directly connected to the Floor 3 switch. This allows it to be central to network and physically secured alonside IT/Management staff. 
+- Guest Access connects via its own dedicated switch and its own port on the core swith (Gig1/0/5), rather than sharing a switch or uplink with Sales/Reception. Since this design doesn't use VLANs, every port on an acceess switch shares the same broadcast domain giving Guest ACcess its own switch and routed port is what keeps guest traffic in its own subnet without requiring trunking. 
 ## Configuration Highlighs 
 
 ## Testing & Verification 
