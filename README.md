@@ -5,8 +5,51 @@ This project simulates a network design engagement for a fictional small consult
 
 ## Network Requirements
 
-## Topology
+## Physical Layout
 
+The Cobalt Co. Consulting network uses a single Layer 3 core switch as the distribution point for all floor subnets, with one edge router (Cobalt Router) handling the boundary to the ISP.
+
+|
+Core Switch Port 
+|
+Connects To
+|
+|
+---
+|
+---
+|
+|
+Gig1/0/1
+|
+Cobalt Router (edge router / ISP Boundary)
+|
+|
+Gig1/0/2
+| 
+Floor 1 Sales/Reception switch 
+|
+| 
+Gig1/0/3 
+| 
+Floor 2 Accounting/HR switch 
+|
+| 
+Gig1/0/4 
+| 
+Floor 3 IT/Management switch (server room + IT PC)
+|
+| 
+Gig1/0/5 
+| 
+Guest Access switch (isolated guest wireless subnet) 
+|
+
+Each floor swith is Layer 2 only (access switches simply forward frames to an end device). All inter-subnet routing happens at the core swith via routed interfaces (no VLANs or trunking required because each port is its subnet). The Cobalt Router connects the core switch to the ISP cloud and would handle NAT for internet-bound traffice. 
+
+Guest Access is deliberately connected to its dedicated port (Gig1/0/5) rather than sharing a swith with Sales/Reception in order to keep guest traffic in its own broadcast domain. 
+
+![Topology Diagram](docs/topology-diagram.jpg)
 ## IP Addressing Scheme 
 
 ## Design Decisions 
