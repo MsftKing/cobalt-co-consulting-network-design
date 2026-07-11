@@ -5,6 +5,17 @@ This project simulates a network design engagement for a fictional small consult
 
 ## Network Requirements
 
+- Support ~50 employees across 3 floors: Sales/Reception, Accounting/HR, and IT/Management
+- Provide a separate guest wireless network for customers/visitors for internet access 
+- Use VLSM subnetting to size each subnet appropriately with minimal waste 
+- Route between floor subnets using a Layer 3 core switch (no VLANs/trunking)
+- Use RIP to advertise all internal subnets between the core switch and edge router 
+- Provide DHCP for all end-user devices per floor, including a separate DHCP pool for guest wireless 
+- Statically assign IPs to servers, the core switch's routed interfaces, and the core-to-edge router link 
+- Centralize DNS, HTTP, and HTTP services on a single server in the IT/Management server room 
+- Keep guest wireless traffice logically separate from internal department traffic (own subnet, own DNS, own swith uplink)
+- Design with room for future growth
+
 ## Physical Layout
 
 The Cobalt Co. Consulting network uses a single Layer 3 core switch as the distribution point for all floor subnets, with one edge router (Cobalt Router) handling the boundary to the ISP.
