@@ -77,29 +77,48 @@ This reduces the cost and hardware count compared to router-per-floor design whi
 ## Configuration Highlighs 
 
 ## Testing & Verification 
-### Problem
+*** Problem ***
 DHCP clients not receiving IP Addresses
 
-### Symptom
+*** Symptom ***
 PCs on Sales/Reception, Accounting/HR, and Guest Wireless were not pulling IP addresses via DHCP. The IT/Management PC did not fail to obtain an address.
 
-### Root Cause 1 - IP misconfiguraiton 
+*** Root Cause 1 - IP misconfiguraiton ***
 The core switch's routed interfaces had been assigned incorrect IPs, off by one from the documented gateway address. 
 
-### Root Cause 2 - Duplicate Address Conflict 
+*** Root Cause 2 - Duplicate Address Conflict ***
 After ensuring that IT/Management was receiving the correct IP addresses, the switch logged "%IP-4-DUPADDR: Duplicate address 192.168.10.65 on FastEthernet0/4, sourced by 0090.0cdb.dee5". 
 Traced via "show mac address-table" to identify what it turned out to be, the IT/Management PC had been statically configured to 192.168.10.65 instead of set to DHCP. 
 
-### Resolution 
+*** Resolution ***
 1. Corrected all three routed intereface IPs to match the IP addressing table. 
 2. Reconfigured the conflicting end device to use DHCP. 
 3. Verified the server's Default Gateway field was set to "192.168.10.65" (not .66), since these had been mixed in the intial configuration. 
 4. Re-tested DHCP on all four subnet and confirmed each PC pulled an addres from the correct pool with the correct gateway. 
 
-### Verification Commands Used: 
-show ip interface brief 
-show mac address-table 
-show run 
+*** Verification Commands Used: ***
+- show ip interface brief 
+- show mac address-table 
+- show run 
+
+### Test: End-to-End Connectivity via DNS and HTTP
+*** Objective ***
+Confirm that a client on a floor subnet can obtain a DHCP lease, resolve an internal hostname via DNS, and load a page hosted on the centralized server. Validating the full stack works together (DHCP -> routing -> DNS -> HTTP).
+
+*** Steps ***
+1. Configured DNS service on the Server-PT with an A record (www.cobaltco.local -> 192.168.10.66)
+2. Enabled HTTP service on the same server 
+3. From Accounting PC 1 (leased via DHCP on the 192.168.10.0/27 subnet), opened the Desktop web browser. 
+4. Navigated to "http://www.cobaltco.local"
+
+*** Result ***
+Page loaded successfully, confirming: 
+- PC received a valid DHCP lease with correct gateway and DNS server 
+- Core switch routed traffice from ACcounting/HR subnet to IT/Management subnet via RIP 
+- DNS resolved the hostname to the server's IP 
+- HTTP service provided the page correctly 
+
+![Web Browser Success](docs/successful-web-browser.png)
 
 ## SKills Demonstrated 
 
